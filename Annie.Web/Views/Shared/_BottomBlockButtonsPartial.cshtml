@@ -1,0 +1,89 @@
+﻿<div class="fixed-bottom pb-1  container body-content">
+    <div class=" d-md-block d-lg-none text-center h-50">
+        <div class="row">
+            @*<div class="btnBottom buttonForMenuPartial card col mx-3 bg-dark">
+                    <span style="font-size: 20px; color: #ef9500"><i class="fas fa-bars "></i></span>
+                </div>
+
+                <div class="btnBottom buttonForContentPartial card col mx-3 bg-dark">
+                    <span style="font-size: 20px; color: #ef9500"><i class="fas fa-align-center "></i></span>
+                </div>
+
+                <div class="btnBottom buttonForFilterPartial card col mx-3 bg-dark">
+                    <span style="font-size: 20px; color: #ef9500"><i class="fas fa-filter"></i></span>
+                </div>*@
+
+            @*<div class="buttonForMenu card col">
+                    <a href="#" class="asd">
+                        <i class="fas fa-bars"></i>
+                    </a>
+                </div>*@
+        </div>
+
+    </div>
+</div>
+
+<div id="menuRight" class="text-center d-lg-none">
+    <button type="button" class="btnMenu btn">
+        <span>
+            <i class="fas fa-bars"></i>
+        </span>
+    </button>
+</div>
+
+
+
+<style>
+    #menuRight {
+        position: fixed;
+        right: 0;
+        top: 90%;
+        width: 4em;
+    }
+
+    .btnMenu {
+        border: 2px solid transparent;
+        width: 50px;
+        height: 50px;
+        padding: 7px 10px;
+        border-radius: 25px;
+        font-size: 10px;
+        text-align: center;
+        background-color: #292b2c;
+        color: #ef9500;
+        font-size: 20px;
+    }
+
+        .btnMenu:hover {
+            cursor: pointer;
+            color: #ef9500;
+            /*border: 2px solid #ef9500;*/
+        }
+</style>
+<script>
+    var stileForActiveBlock = "col-sm-12 col-12";
+    var stileForHideBlock = "d-none d-lg-block";
+
+    $(document).ready(function () {
+        $('.btnMenu').on('click', btnMenuClick);
+    });
+
+    function btnMenuClick() {
+        if (!$('.btnMenu').hasClass('active')) {
+            $('.btnMenu').addClass('active');
+            $('.btnMenu').css('border', '2px solid #ef9500');
+            $('.btnMenu span').replaceWith('<span><i class="fas fa-chevron-left"></i></span>');
+            $("#stileForMenuPartial").removeClass(stileForHideBlock).addClass(stileForActiveBlock);
+            $("#stileForContentPartial").removeClass(stileForActiveBlock).addClass(stileForHideBlock);
+            $("#stileForFilterPartial").removeClass(stileForHideBlock).addClass(stileForActiveBlock);
+        }
+        else {
+            $('.btnMenu').removeClass('active');
+            $('.btnMenu').css('border', '2px solid transparent');
+            $('.btnMenu span').replaceWith('<span><i class="fas fa-bars"></i></span>');
+            $("#stileForMenuPartial").removeClass(stileForActiveBlock).addClass(stileForHideBlock);
+            $("#stileForContentPartial").removeClass(stileForHideBlock).addClass(stileForActiveBlock);
+            $("#stileForFilterPartial").removeClass(stileForActiveBlock).addClass(stileForHideBlock);
+        }
+    };
+</script>

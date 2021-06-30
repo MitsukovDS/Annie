@@ -1,0 +1,31 @@
+﻿@*@model ErrorViewModel*@
+@{
+    ViewData["Title"] = "Error";
+    Layout = "Layout/_LayoutEmpty";
+}
+
+<h1 class="text-danger">У нас возникла ошибочка...</h1>
+<p>
+    По какой-то причине у нас возникла ошибка. Если вы видите это сообщение, мы так же уже узнали об этой ошибке и делаем всё возможное, чтобы исправить её :)
+</p>
+<p>
+    Если всё же это сообщение появляется продолжительное время, пожалуйста, свяжитесь с нашей технической поддержкой, написав письмо на почту <a href="mailto:info@1zvonok.com">info@1zvonok.com</a>
+</p>
+<p>
+    <strong>Приносим свои извинения.</strong>
+</p>
+
+@*@if (Model.ShowRequestId)
+{
+    <p>
+        <strong>Request ID:</strong> <code>@Model.RequestId</code>
+    </p>
+}
+
+<h3>Development Mode</h3>
+<p>
+    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
+</p>
+<p>
+    <strong>Development environment should not be enabled in deployed applications</strong>, as it can result in sensitive information from exceptions being displayed to end users. For local debugging, development environment can be enabled by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>, and restarting the application.
+</p>*@

@@ -1,0 +1,116 @@
+﻿@using EntityModels = Annie.Model
+
+@model Annie.Web.ViewModels.Olympiad.OlympiadsForDisciplines
+@{
+    ViewData["Title"] = "Олимпиада Zvonok";
+}
+
+<div id="stileForContentPartial" class="col-lg-9 contentPartial">
+
+    <div class="row">
+        @if (Model.DepartmentsForDisciplines.Any())
+        {
+            foreach (var departmentsForDiscipline in Model.DepartmentsForDisciplines.OrderBy(d => d.Discipline.Title))
+            {
+                var discipline = departmentsForDiscipline.Discipline.GetAlias(Model.OlympiadType);
+                <div class="col-12 col-sm-6">
+                    <div class="card mb-2 discipline">
+                        <img class="card-img-top" src="@discipline.UploadedFile.FullPath" alt="image" style="max-height:200px;">
+                        <div class="card-body py-2">
+                            <h3 class="card-title disciplineTitle">@discipline.Title </h3>
+                            <h3><a asp-area="" asp-controller="Discipline" asp-action="Index" asp-route-disciplineId="@discipline.Id" asp-route-olympiadType="@((int)Model.OlympiadType)" class="disciplineSchedule" style="display:none;">Подробнее</a></h3>
+                            <div class="departments" style="display:none;">
+                                <hr class="my-1" />
+                                @foreach (var department in departmentsForDiscipline.Departments.OrderBy(d => d.Id))
+                                {
+                                    <a asp-area="" asp-controller="Home" asp-action="Olympiads" asp-route-olympiadTypeId="@((int)Model.OlympiadType)" asp-route-departmentId="@department.Id" asp-route-disciplineId="@discipline.Id" class="btn btn-sm btn-outline-primary mb-1">@department.Title</a>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        К сожалению, мы не нашли для вас подходящих олимпиад :(
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+<div id="stileForFilterPartial" class="col-lg-3 px-1 d-none d-lg-block">
+    <div class="filterPartial">
+        <div class="card rightBlockButtons">
+            <div class="card-body">
+                <h5 class="card-title">Олимпиады для</h5>
+                <a asp-area="" asp-controller="Olympiad" asp-action="Index" asp-route-olympiadType="@(EntityModels.OlympiadTypes.Kindergarten.ToString())" class="kindergartenType btn btn-outline-secondary btn-block mt-1">детсада</a>
+                <a asp-area="" asp-controller="Olympiad" asp-action="Index" asp-route-olympiadType="@(EntityModels.OlympiadTypes.School.ToString())" type="submit" class="schoolType btn btn-outline-secondary btn-block mt-1">школы</a>
+                <a asp-area="" asp-controller="Olympiad" asp-action="Index" asp-route-olympiadType="@(EntityModels.OlympiadTypes.University.ToString())" type="submit" class="universityType btn btn-outline-secondary btn-block mt-1">ссуза/вуза</a>
+            </div>
+            <div class="card-footer">
+                <a asp-area="" asp-controller="Olympiad" asp-action="ScheduleOlympiads" type="submit" class="btn btn-sm btn-outline-secondary btn-block mt-1">Расписание</a>
+                <button type="button" class="btn btn-block btn-outline-dark mt-1" data-toggle="modal" data-target=".olympiadFAQModal">Как проходит олимпиада?</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<partial name="_OlympiadFAQModalPartial" />
+
+<style>
+    .discipline, .rightBlockButtons {
+        border: 2px solid transparent;
+    }
+
+    .rightBlockButtons:hover {
+        cursor: pointer;
+        border: 2px solid #ef9500;
+    }
+
+    .discipline:hover {
+        cursor: pointer;
+        border: 2px solid #ef9500;
+    }
+</style>
+
+<script>
+    function activeButton() {
+        let olympiadTypeId = @((int)Model.OlympiadType);
+
+        if (olympiadTypeId == @((int)EntityModels.OlympiadTypes.Kindergarten)) {
+            $('.kindergartenType').removeClass('btn-outline-secondary').addClass('btn-secondary');
+        }
+
+        if (olympiadTypeId == @((int)EntityModels.OlympiadTypes.School)) {
+            $('.schoolType').removeClass('btn-outline-secondary').addClass('btn-secondary');
+        }
+
+        if (olympiadTypeId == @((int)EntityModels.OlympiadTypes.University)) {
+            $('.universityType').removeClass('btn-outline-secondary').addClass('btn-secondary');
+        }
+    };
+
+    $(document).ready(function () {
+        activeButton();
+
+        $('.discipline').on('click', function () {
+            let currentDiscipline = $(this);
+
+            let currentDepartments = currentDiscipline.find('.departments');
+            $('.discipline').find('.departments').not(currentDepartments).toggle(false);
+            currentDepartments.toggle();
+
+            currentDiscipline.find('.disciplineSchedule, .disciplineTitle').toggle();
+            $('.discipline').not(currentDiscipline).find('.disciplineTitle').toggle(true);
+            $('.discipline').not(currentDiscipline).find('.disciplineSchedule').toggle(false);
+        });
+    });
+</script>

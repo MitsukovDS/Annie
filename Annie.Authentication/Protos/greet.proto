@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option csharp_namespace = "Annie.Authentication";
+
+package greet;
+
+// The greeting service definition.
+service Greeter {
+  // Sends a greeting
+  rpc GetToken (AuthenticationRequest) returns (AuthenticationResponce);
+}
+
+message AuthenticationRequest {
+	int32 user_id = 1;
+	bool remember_me = 2;
+}
+
+message AuthenticationResponce {
+	string token = 1;
+}

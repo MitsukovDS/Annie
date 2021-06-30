@@ -1,0 +1,49 @@
+﻿<nav class="sticky-top navbar navbar-expand-lg navbar-dark bg-dark py-0">
+    <div class="container">
+        <a class="navbar-brand" asp-area="" asp-controller="Olympiad" asp-action="Index">
+            <em style="color:#ef9500"><img src="/logo/logoST.png" width="39" height="30" class="d-inline-block align-top" alt=""></em>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbars" aria-controls="navbars" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbars">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item active">
+                    <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Олимпиады</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#">Репетиторы</a>
+                </li>
+
+                <li class="nav-item dropdown active">
+                    <a class="nav-link dropdown-toggle" href="" id="dropdownInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Информация</a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownInfo">
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="About">О компании</a>
+                        <a class="dropdown-item" asp-area="" asp-controller="Home" asp-action="Contact">Контакты</a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="navbar-nav">
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="Logout">Выйти</a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="Login">Войти</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" asp-area="" asp-controller="User" asp-action="SignUp">Зарегистрироваться</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</nav>

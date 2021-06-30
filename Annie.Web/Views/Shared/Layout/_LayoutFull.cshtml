@@ -1,0 +1,176 @@
+﻿ @using Annie.Model;
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/vendor.min.css" />
+    <script src="~/vendor.min.js"></script>
+</head>
+<body style="background-color:#edeef1" class="d-flex flex-column min-vh-100">
+    <script>
+        $(document).ready(function () {
+            //https://select2.org/
+            $(".select2").select2({
+                theme: "bootstrap4"
+            });
+        });
+    </script>
+    <partial name="_HeaderPartial" />
+
+    @*<partial name="_CookieConsentPartial" />*@
+
+    <style>
+        a.left-menu:hover {
+            background-color: #dcdcdc !important;
+            border-radius: 3px;
+        }
+    
+        a.left-menu {
+            color: #495057;
+        }
+    </style>
+
+    <div class="container body-content">
+        <div class="row my-4">
+
+
+            <div id="stileForMenuPartial" class="col-lg-2 px-1 d-none d-lg-block menuPartial">
+                @if (this.User.Identity.IsAuthenticated)
+                {
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link left-menu" asp-area="" asp-controller="PrivateOffice" asp-action="Index"><i class="far fa-user-circle"></i> Моя страница</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link left-menu" asp-area="" asp-controller="Olympiad" asp-action="MyOlympiads" asp-route-olympiadId="@null"><i class="fas fa-clipboard-check"></i> Мои олимпиады</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link left-menu" asp-area="" asp-controller="Home" asp-action="Index"><i class="far fa-clipboard"></i> Олимпиады</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link left-menu" asp-area="" asp-controller="Olympiad" asp-action="ScheduleOlympiads"><i class="far fa-calendar-alt"></i> Расписание</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link disabled left-menu" href="#">Новости</a>
+                        </li>
+
+                        @if (User.Identity.IsAuthenticated && User.HavePermission(Roles.Global, Roles.Admin))
+                        {
+
+                            <li class="nav-item">
+                                <hr />
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Admin" asp-action="Users"><i class="fas fa-users"></i> Пользователи</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Admin" asp-action="Registrations">Регистрации</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Admin" asp-action="Payments">Платежи</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Admin" asp-action="Orders">Заказы</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Report" asp-action="Index"><i class="far fa-chart-bar"></i> Отчёты</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Admin" asp-action="Olympiads">Олимпиады</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link disabled left-menu" @*asp-area="" asp-controller="Admin" asp-action="DatabaseQuestions"*@>База вопросов</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Admin" asp-action="Disciplines">Дисциплины</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link left-menu" asp-area="" asp-controller="Admin" asp-action="Diplomas">Дипломы</a>
+                            </li>
+                        }
+
+                    </ul>
+
+                    <script>
+                        $(document).ready(function () {
+                            $('.menu_olimpiad').click(function () {
+                                $(".contentPartial").load("/Home/Index");
+                            });
+                        });
+                    </script>
+                }
+
+            </div>
+
+            <div class="col-lg-10">
+                <div class="row">
+                    @RenderBody()
+                </div>
+            </div>
+
+        </div>
+
+        @foreach (var message in TempData.GetMessages())
+        {
+            string header = "";
+            switch (message.Type)
+            {
+                case MessageType.Success:
+                    header = "Успешно!";
+                    break;
+
+                case MessageType.Info:
+                    header = "Информация!";
+                    break;
+
+                case MessageType.Warning:
+                    header = "Внимание!";
+                    break;
+
+                case MessageType.Danger:
+                    header = "Внимание!";
+                    break;
+            }
+
+            <div class="alert alert-@message.Type.ToString().ToLower() alert-dismissible fade show fixed-bottom" role="alert">
+                <h4 class="alert-heading">@header</h4>
+                <hr />
+                <p>@Html.Raw(message.Text)</p>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        }
+
+
+    </div>
+
+    <partial name="_BottomBlockButtonsPartial" />
+
+    <partial name="_FooterPartial" />
+
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date(); k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(68998282, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
+        });
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/68998282" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+
+</body>
+</html>
+
+@RenderSection("Scripts", required: false)

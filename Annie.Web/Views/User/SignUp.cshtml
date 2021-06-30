@@ -1,0 +1,122 @@
+﻿@model Annie.Web.ViewModels.User.SignUp
+
+@{
+    ViewData["Title"] = "Регистрация";
+    Layout = "Layout/_LayoutEmpty";
+}
+<div class="card card-body">
+    <h2>@ViewData["Title"]</h2>
+
+    <form method="post">
+        <div class="form-group">
+            <label for="LastName">Фамилия</label>
+            <input type="text" class="form-control" placeholder="Фамилия" id="LastName" name="LastName" required autofocus>
+        </div>
+        <div class="form-group">
+            <label for="FirstName">Имя</label>
+            <input type="text" class="form-control" placeholder="Имя" id="FirstName" name="FirstName" required>
+        </div>
+        <div class="form-group">
+            <label for="MiddleName">Отчество</label>
+            <input type="text" class="form-control" placeholder="Отчество" id="MiddleName" name="MiddleName" required>
+        </div>
+        <div class="form-group">
+            <label for="Email">Почта</label>
+            <input type="email" class="form-control" placeholder="Почта" aria-describedby="emailHelp" id="Email" name="Email" required>
+            <small id="emailHelp" class="form-text text-muted">На указанную Вами почту будет отправлено сообщение для подтверждения регистрации</small>
+        </div>
+        <div class="form-group">
+            <label for="Password">Пароль</label>
+            <div class="input-group" id="show_hide_password">
+                <input type="password" class="form-control" placeholder="Пароль" id="Password" name="Password" aria-describedby="passwordHelpInline" required>
+                <div class="input-group-append">
+                    <a class="input-group-text"><i class="fas fa-eye-slash" aria-hidden="true"></i></a>
+                </div>
+            </div>
+            <small id="passwordHelpInline" class="text-muted">
+                Длина пароля должна быть от 8 до 100 символов
+            </small>
+        </div>
+        <div class="form-group">
+            <label for="">Пожалуйста, выберите Вашу роль в системе</label>
+            <div>
+                @foreach (var role in Model.Roles)
+                {
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="@("role" + role.Id)" name="RoleId" class="radioRole custom-control-input" onchange="ChangeRadio(@role.Id)" value="@role.Id" required>
+                        <label class="custom-control-label" for="@("role" + role.Id)">@role.Title</label>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="">Олимпиады по каким предметам Вам будут интересны?</label>
+            <div class="row">
+                @foreach (var discipline in Model.Disciplines)
+                {
+                    <div class="col-6">
+                        <div class="custom-control custom-checkbox">
+                            <input type="checkbox" class="checkBoxDiscipline custom-control-input" id="@("customCheck" + discipline.Id)" value="@discipline.Id" onchange="ChangeCheckBox()" required>
+                            <label class="custom-control-label" for="@("customCheck" + discipline.Id)">@discipline.Title</label>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <button type="submit" class="signUp btn btn-primary">Зарегистрироваться</button>
+        <a asp-area="" asp-controller="Home" asp-action="Index">На главную</a>
+    </form>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $("#show_hide_password a").on('click', function (event) {
+            event.preventDefault();
+            if ($("#show_hide_password input").attr("type") == "text") {
+                $("#show_hide_password input").attr("type", "password");
+                $("#show_hide_password i").addClass("fa-eye-slash");
+                $("#show_hide_password i").removeClass("fa-eye");
+            } else if ($("#show_hide_password input").attr("type") == "password") {
+                $("#show_hide_password input").attr("type", "text");
+                $("#show_hide_password i").removeClass("fa-eye-slash");
+                $("#show_hide_password i").addClass("fa-eye");
+            }
+        });
+    });
+
+    function ChangeRadio(roleId) {
+        $('input[type=radio]').removeAttr("checked");
+        $("#role" + roleId).attr("checked", "checked");
+    };
+
+    function ChangeCheckBox() {
+        let checked = $("input[type=checkbox]:checked").length;
+        let checkBoxDisciplines = document.getElementsByClassName("checkBoxDiscipline");
+        if (checked) {
+            i = checkBoxDisciplines.length;
+            while (i--) {
+                checkBoxDisciplines[i].removeAttribute("required");
+            }
+        }
+        else {
+            i = checkBoxDisciplines.length;
+            while (i--) {
+                checkBoxDisciplines[i].setAttribute("required", "true");
+            }
+        }
+
+        let counter = 0;
+        for (let i = 0; i < checkBoxDisciplines.length; i++) {
+            if (checkBoxDisciplines[i].checked) {
+                checkBoxDisciplines[i].setAttribute("name", "InterestingDisciplinesIds[" + counter + "]");
+                counter++;
+            }
+            else {
+                checkBoxDisciplines[i].removeAttribute("name");
+            }
+        }
+    };
+</script>
+

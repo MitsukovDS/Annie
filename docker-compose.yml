@@ -1,0 +1,53 @@
+version: '3.4'
+
+services:
+  nginx.annie:
+    image: ${DOCKER_REGISTRY-}nginxannie
+    build:
+      context: .
+      dockerfile: Annie/Dockerfile
+    restart: always
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d/annie.conf:/etc/nginx/conf.d/annie.conf
+      - ./nginx/certs/:/etc/nginx/certs/
+      - ./nginx/log/:/var/log/nginx/
+    ports:
+      - "1234:80"
+      - "1235:443"
+    links:
+      - annie
+
+  annie:
+    image: ${DOCKER_REGISTRY-}annie
+    build:
+      context: .
+      dockerfile: Annie/Dockerfile
+    restart: always
+    ports:
+      - "127.0.0.1:5005:5005"
+
+  nginx.store:
+    image: ${DOCKER_REGISTRY-}nginxstore
+    build:
+      context: .
+      dockerfile: Annie/Dockerfile
+    restart: always
+    volumes:
+      - ./nginx/conf/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d/annie.conf:/etc/nginx/conf.d/annie.conf
+      - ./nginx/certs/:/etc/nginx/certs/
+      - ./nginx/log/:/var/log/nginx/
+    ports:
+      - "1234:80"
+      - "1235:443"
+    links:
+      - annie.store
+
+  annie.store:
+    image: ${DOCKER_REGISTRY-}anniestore
+    build:
+      context: .
+      dockerfile: Annie.Store/Dockerfile
+    volumes:
+      - ./store/:/store/

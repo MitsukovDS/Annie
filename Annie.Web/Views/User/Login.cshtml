@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Вход";
+    Layout = "Layout/_LayoutEmpty";
+}
+<div class="card card-body">
+    <h2>@ViewData["Title"]</h2>
+    <h3>@ViewData["Message"]</h3>
+
+    <form method="post">
+        <div class="form-group">
+            <label for="inputEmailOrLogin">Почта</label>
+            <input class="form-control" id="inputEmailOrLogin" aria-describedby="emailOrLoginHelp" placeholder="Почта" name="EmailOrLogin" required autofocus>
+            <small id="emailOrLoginHelp" class="form-text text-muted">Укажите почту, которую Вы использовали при регистрации, или Ваш логин</small>
+        </div>
+        <div class="form-group">
+            <label for="inputPassword">Пароль</label>
+            <input type="password" class="form-control" id="inputPassword" placeholder="Пароль" name="Password">
+            <a asp-area="" asp-controller="User" asp-action="ForgotPassword">Забыли пароль?</a>
+        </div>
+        <div class="form-group form-check">
+            <input type="checkbox" class="form-check-input" id="checkBoxRememberMe" name="RememberMe" onchange="ChangeCheckBox()" value="false">
+            <label class="form-check-label" for="checkBoxRememberMe">Запомнить меня</label>
+        </div>
+        <button type="submit" class="btn btn-primary">Войти</button>
+        <a asp-area="" asp-controller="Home" asp-action="Index">На главную</a>
+        <div class="text-right"><a asp-area="" asp-controller="User" asp-action="SignUp">Зарегистрироваться</a></div>
+
+    </form>
+</div>
+
+<script>
+    function ChangeCheckBox() {
+        var checkBox = document.getElementById("checkBoxRememberMe");
+        checkBox.value = checkBox.value == "false";
+    }
+</script>
